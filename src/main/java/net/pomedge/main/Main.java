@@ -495,8 +495,21 @@ class Commands extends ListenerAdapter {
 			channel.sendMessage(builder.build()).queue();
 
 		} else if(args[0].equals(prefix + "mostrarDuracao")) {
-			if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()) == null) {
+			if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
 				channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "NÃ£o estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build());
+			}
+		}
+		else if (args[0].equals(prefix+"aviso")) {
+			if(event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+				event.getChannel().sendMessage("@everyone" + event.getMessage().getContentRaw().replace(prefix+"aviso","") + ".").queue();
+				event.getMessage().delete().queue();
+			}
+			else {
+				EmbedBuilder ebb = new EmbedBuilder();
+				ebb.setTitle("Erro");
+				ebb.setDescription("Só Administradores tem acesso a este comando");
+				ebb.setColor(Color.red);
+				event.getChannel().sendMessage(ebb.build()).queue();
 			}
 		}
 	}
