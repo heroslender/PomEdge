@@ -73,7 +73,7 @@ public class Main {
 
 		} catch (LoginException e) {
 			System.out.println(
-					"ERRO AO LOGAR! \n Soluções comuns: \n Verifique sua conexão com a internet \n Verifique o token");
+					"ERRO AO LOGAR! \n SoluÃ§Ãµes comuns: \n Verifique sua conexÃ£o com a internet \n Verifique o token");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +115,7 @@ class Commands extends ListenerAdapter {
 		}
 		if (Main.bannedUsers.contains(event.getAuthor().getId()) && msg.startsWith(prefix)) {
 			channel2.sendMessage(
-					"Infelizmente, não podes executar nenhum comando, porque você quebrou os nossos termos, e o meu criador baniu você!")
+					"Infelizmente, nÃ£o podes executar nenhum comando, porque vocÃª quebrou os nossos termos, e o meu criador baniu vocÃª!")
 					.queue();
 			return;
 		}
@@ -127,7 +127,7 @@ class Commands extends ListenerAdapter {
 			prefix = args[1];
 			Main.jsonReader.put(event.getGuild().getId() + "Prefix", args[1]);
 			Main.writeJson();
-			channel2.sendMessage("Prefixo alterado com sucesso!, o seu prefixo agora é '" + prefix + "'").queue();
+			channel2.sendMessage("Prefixo alterado com sucesso!, o seu prefixo agora Ã© '" + prefix + "'").queue();
 
 		}
 
@@ -136,7 +136,7 @@ class Commands extends ListenerAdapter {
 			try {
 				User teste = Main.jda.getUserByTag(tag);
 			}catch (Exception e) {
-				channel2.sendMessage("O usuario "+tag+" não existe").queue();
+				channel2.sendMessage("O usuario "+tag+" nÃ£o existe").queue();
 				return;
 			}
 			if (args.length < 2) {
@@ -146,7 +146,7 @@ class Commands extends ListenerAdapter {
 				channel2.sendMessage("Apenas o meu criador pode executar esse comando!").queue();
 				
 			} else if (Main.bannedUsers.contains(Main.jda.getUserByTag(tag).getId())) {
-				channel2.sendMessage("O Usuario @"+tag+" ja está registrado como banido no meu banco de dados, pulando...").queue();
+				channel2.sendMessage("O Usuario @"+tag+" ja estÃ¡ registrado como banido no meu banco de dados, pulando...").queue();
 				return;
 			} else {
 				Main.bannedUsers.add(Main.jda.getUserByTag(tag).getId());
@@ -160,7 +160,7 @@ class Commands extends ListenerAdapter {
 			try {
 				User teste = Main.jda.getUserByTag(tag);
 			}catch (IllegalArgumentException e) {
-				channel2.sendMessage("O usuario "+tag+" não existe").queue();
+				channel2.sendMessage("O usuario "+tag+" nÃ£o existe").queue();
 				return;
 			}
 			if (args.length < 2) {
@@ -170,7 +170,7 @@ class Commands extends ListenerAdapter {
 				channel2.sendMessage("Apenas o meu criador pode executar esse comando!").queue();
 				
 			} else if (!Main.bannedUsers.contains(Main.jda.getUserByTag(tag).getId())) {
-				channel2.sendMessage("O Usuario @"+tag+" não está banido, pulando...").queue();
+				channel2.sendMessage("O Usuario @"+tag+" nÃ£o estÃ¡ banido, pulando...").queue();
 				return;
 			} else {
 				Main.bannedUsers.remove(Main.jda.getUserByTag(tag).getId());
@@ -178,7 +178,20 @@ class Commands extends ListenerAdapter {
 				channel2.sendMessage("O Usuario @"+tag+" foi desbanido com sucesso!").queue();
 			}
 		}
-		if (args[0].equals(prefix + "clearmsg")) {
+		else if(args[0].equals(prefix + "mostrarDuracao")) {
+			if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
+				channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build());
+				return;
+			}
+			AudioPlayer player = PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player;
+			Long durationInMs = player.getPlayingTrack().getPosition();
+			String durationInSec = truncate(durationInMs.toString(), durationInMs.toString().length() - 3);
+			channel2.sendMessage(durationInSec).queue();
+			
+		}
+	}
+	
+	if (args[0].equals(prefix + "clearmsg")) {
 			if (args.length < 2) {
 				channel2.sendMessage("Uso: " + prefix + "clearmsg <msgs>").queue();
 				return;
@@ -186,7 +199,7 @@ class Commands extends ListenerAdapter {
 			try {
 				Integer teste = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				channel2.sendMessage("O numero especificado é invalido!").queue();
+				channel2.sendMessage("O numero especificado Ã© invalido!").queue();
 				return;
 			}
 			List<Message> messages = event.getChannel().getHistory().retrievePast(Integer.parseInt(args[1])).complete();
@@ -207,7 +220,7 @@ class Commands extends ListenerAdapter {
 					event.getChannel().sendMessage(bd.build()).queue();
 					return;
 				} else if (event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().inVoiceChannel()) {
-					EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(), "Eu já estou em outro canal de audio",
+					EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(), "Eu jÃ¡ estou em outro canal de audio",
 							"`" + prefix + "join`", Erros.ACESSO_NEGADO);
 					event.getChannel().sendMessage(bd.build()).queue();
 					return;
@@ -238,7 +251,7 @@ class Commands extends ListenerAdapter {
 			} else if (args.length == 1) {
 
 				event.getChannel().sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
-						"Você não passou pra mim a musica que vc quer", "`" + prefix + "play`", Erros.SINTAXE).build())
+						"VocÃª nÃ£o passou pra mim a musica que vc quer", "`" + prefix + "play`", Erros.SINTAXE).build())
 						.queue();
 			}
 			YouTube temp = null;
@@ -256,7 +269,7 @@ class Commands extends ListenerAdapter {
 			if (input.isEmpty()) {
 				event.getChannel()
 						.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
-								"Você não colocou nenhum argumento: \n `" + prefix + "play <Titulo da musica>`",
+								"VocÃª nÃ£o colocou nenhum argumento: \n `" + prefix + "play <Titulo da musica>`",
 								prefix + "play", Erros.SINTAXE).build());
 
 				return;
@@ -308,16 +321,16 @@ class Commands extends ListenerAdapter {
 			} catch (IndexOutOfBoundsException e) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Não estou achando o cargo DJ.");
-				bd.setDescription("O cargo DJ não existe, recorra a algum staff para criar esse cargo!");
+				bd.setTitle("NÃ£o estou achando o cargo DJ.");
+				bd.setDescription("O cargo DJ nÃ£o existe, recorra a algum staff para criar esse cargo!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			}
 			if (!event.getMember().getRoles().contains(dj)) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Você não tem o cargo dj!");
-				bd.setDescription("Hmm, você não tem permissão, porque, você nao tem o cargo DJ!");
+				bd.setTitle("VocÃª nÃ£o tem o cargo dj!");
+				bd.setDescription("Hmm, vocÃª nÃ£o tem permissÃ£o, porque, vocÃª nao tem o cargo DJ!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			} else if (player.getPlayingTrack() == null) {
@@ -340,21 +353,21 @@ class Commands extends ListenerAdapter {
 			} catch (IndexOutOfBoundsException e) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Não estou achando o cargo DJ.");
-				bd.setDescription("O cargo DJ não existe, recorra a algum staff para criar esse cargo!");
+				bd.setTitle("NÃ£o estou achando o cargo DJ.");
+				bd.setDescription("O cargo DJ nÃ£o existe, recorra a algum staff para criar esse cargo!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			}
 			if (!event.getMember().getRoles().contains(dj)) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Você não tem o cargo dj!");
-				bd.setDescription("Hmm, você não tem permissão, porque, você nao tem o cargo DJ!");
+				bd.setTitle("VocÃª nÃ£o tem o cargo dj!");
+				bd.setDescription("Hmm, vocÃª nÃ£o tem permissÃ£o, porque, vocÃª nao tem o cargo DJ!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			} else if (musicManager.player.getPlayingTrack() == null) {
 				event.getTextChannel().sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
-						"Não tenho nunhuma musica em reprodução", "`" + prefix + "parar`", Erros.ERRO).build()).queue();
+						"NÃ£o tenho nunhuma musica em reproduÃ§Ã£o", "`" + prefix + "parar`", Erros.ERRO).build()).queue();
 				return;
 			} else
 				musicManager.scheduler.getQueue().clear();
@@ -374,22 +387,22 @@ class Commands extends ListenerAdapter {
 			} catch (IndexOutOfBoundsException e) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Não estou achando o cargo DJ.");
-				bd.setDescription("O cargo DJ não existe, recorra a algum staff para criar esse cargo!");
+				bd.setTitle("NÃ£o estou achando o cargo DJ.");
+				bd.setDescription("O cargo DJ nÃ£o existe, recorra a algum staff para criar esse cargo!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			}
 			if (!event.getMember().getRoles().contains(dj)) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Você não tem o cargo dj!");
-				bd.setDescription("Hmm, você não tem permissão, porque, você nao tem o cargo DJ!");
+				bd.setTitle("VocÃª nÃ£o tem o cargo dj!");
+				bd.setDescription("Hmm, vocÃª nÃ£o tem permissÃ£o, porque, vocÃª nao tem o cargo DJ!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			} else if (musicManager.player.getPlayingTrack() == null) {
 				event.getTextChannel()
 						.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
-								"Não tenho nenhuma música para pausar/despausar", prefix+"`pause`", Erros.ERRO).build())
+								"NÃ£o tenho nenhuma mÃºsica para pausar/despausar", prefix+"`pause`", Erros.ERRO).build())
 						.queue();
 				;
 				return;
@@ -397,11 +410,11 @@ class Commands extends ListenerAdapter {
 			if (!musicManager.player.isPaused()) {
 				musicManager.player.setPaused(true);
 				event.getTextChannel().sendMessage(Utils.sucessEmbed(event.getAuthor(),
-						"Musica pausada com sucesso!\n Dê `"+prefix+"pause` denovo para despausar!").build()).queue();
+						"Musica pausada com sucesso!\n DÃª `"+prefix+"pause` denovo para despausar!").build()).queue();
 			} else {
 				musicManager.player.setPaused(false);
 				event.getTextChannel().sendMessage(Utils.sucessEmbed(event.getAuthor(),
-						"Musica despausada com sucesso!\n Dê `"+prefix+"pause` denovo para pausar!").build()).queue();
+						"Musica despausada com sucesso!\n DÃª `"+prefix+"pause` denovo para pausar!").build()).queue();
 			}
 
 		} else if (args[0].equals(prefix+"volume")) {
@@ -412,22 +425,22 @@ class Commands extends ListenerAdapter {
 			} catch (IndexOutOfBoundsException e) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Não estou achando o cargo DJ.");
-				bd.setDescription("O cargo DJ não existe, recorra a algum staff para criar esse cargo!");
+				bd.setTitle("NÃ£o estou achando o cargo DJ.");
+				bd.setDescription("O cargo DJ nÃ£o existe, recorra a algum staff para criar esse cargo!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			}
 			if (!event.getMember().getRoles().contains(dj)) {
 				EmbedBuilder bd = new EmbedBuilder();
 				bd.setColor(Color.MAGENTA);
-				bd.setTitle("Você não tem o cargo dj!");
-				bd.setDescription("Hmm, você não tem permissão, porque, você nao tem o cargo DJ!");
+				bd.setTitle("VocÃª nÃ£o tem o cargo dj!");
+				bd.setDescription("Hmm, vocÃª nÃ£o tem permissÃ£o, porque, vocÃª nao tem o cargo DJ!");
 				event.getTextChannel().sendMessage(bd.build()).queue();
 				return;
 			} else if (args.length == 1) {
 				event.getChannel()
 						.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
-								"Coloque um numero de `0 - 100`:\n "+prefix+"volume <Número>`", "`"+prefix+"volume`", Erros.SINTAXE)
+								"Coloque um numero de `0 - 100`:\n "+prefix+"volume <NÃºmero>`", "`"+prefix+"volume`", Erros.SINTAXE)
 								.build())
 						.queue();
 			}
@@ -459,7 +472,7 @@ class Commands extends ListenerAdapter {
 			GuildMusicManager musicManager = playerManager.getGuildMusicManager(event.getGuild());
 			if (musicManager.player.getPlayingTrack() == null) {
 				event.getTextChannel()
-						.sendMessage(Utils.sucessEmbed(event.getAuthor(), "Não estou cantando nada.").build()).queue();
+						.sendMessage(Utils.sucessEmbed(event.getAuthor(), "NÃ£o estou cantando nada.").build()).queue();
 			} else {
 				event.getTextChannel()
 						.sendMessage(Utils
@@ -476,7 +489,7 @@ class Commands extends ListenerAdapter {
 
 			if (queue.isEmpty()) {
 
-				EmbedBuilder builder = new EmbedBuilder().setTitle("Minha fila está vazia!").setColor(Color.green);
+				EmbedBuilder builder = new EmbedBuilder().setTitle("Minha fila estÃ¡ vazia!").setColor(Color.green);
 				channel.sendMessage(builder.build()).queue();
 				return;
 			}
@@ -496,7 +509,7 @@ class Commands extends ListenerAdapter {
 
 		} else if(args[0].equals(prefix + "mostrarDuracao")) {
 			if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
-				channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build());
+				channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "NÃ£o estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build());
 			}
 		}
 		else if (args[0].equals(prefix+"aviso")) {
@@ -507,7 +520,7 @@ class Commands extends ListenerAdapter {
 			else {
 				EmbedBuilder ebb = new EmbedBuilder();
 				ebb.setTitle("Erro");
-				ebb.setDescription("S� Administradores tem acesso a este comando");
+				ebb.setDescription("Só Administradores tem acesso a este comando");
 				ebb.setColor(Color.red);
 				event.getChannel().sendMessage(ebb.build()).queue();
 			}
@@ -539,4 +552,12 @@ class Commands extends ListenerAdapter {
 
 		return null;
 	}
+public static String truncate(String value, int length) {
+        // Ensure String length is longer than requested size.
+        if (value.length() > length) {
+            return value.substring(0, length);
+        } else {
+            return value;
+        }
+    } 
 }
