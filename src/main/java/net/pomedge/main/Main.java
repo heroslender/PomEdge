@@ -172,7 +172,7 @@ class Commands extends ListenerAdapter {
                 channel2.sendMessage("O Usuario @"+tag+" foi desbanido com sucesso!").queue();
             }
         }
-        else if(args[0].equals(prefix + "mostrarDuracao")) {
+        else if(args[0].equals(prefix + "mostrarPosicao")) {
             if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
                 channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build()).queue();
                 return;
@@ -180,7 +180,7 @@ class Commands extends ListenerAdapter {
             AudioPlayer player = PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player;
             Long durationInMs = player.getPlayingTrack().getPosition();
             String durationInSec = truncate(durationInMs.toString(), durationInMs.toString().length() - 3);
-            channel2.sendMessage(durationInSec).queue();
+            channel2.sendMessage("O video esta em "+durationInSec+"s").queue();
 
         }
 
@@ -443,7 +443,7 @@ class Commands extends ListenerAdapter {
 		if(!event.getMember().hasPermission(Permission.BAN_MEMBERS)){
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("<a:error:680884407594385419> Você não tem permissão!");
-            bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
+
             channel2.sendMessage(bd.build()).queue();
             return;
         }
