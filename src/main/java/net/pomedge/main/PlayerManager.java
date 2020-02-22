@@ -44,19 +44,28 @@ public class PlayerManager {
 
         return musicManager;
     }
-
+    private String truncate(String value, int length) {
+        // Ensure String length is longer than requested size.
+        if (value.length() > length) {
+            return value.substring(0, length);
+        } else {
+            return value;
+        }
+    }
     public void loadAndPlay(TextChannel channel, String trackUrl, User author, MessageReceivedEvent event) {
         GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
 
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-          
-            	EmbedBuilder bd =Utils.sucessEmbed(author, "A Musica "+track.getInfo().title + " foi Adicionada á fila com sucesso");
-            	bd.setImage("https://i.ytimg.com/vi/"+track.getInfo().uri.replace("https://www.youtube.com/watch?v=", "")+"/hqdefault.jpg");
+                Long trackDuration = track.getDuration();
+            	EmbedBuilder bd = new EmbedBuilder();
+            	bd.setTitle("<a:Music:680732802244673598> Discoteca:");
+            	bd.setDescription("Foi adicionada essa musica na fila: \n" +
+                        "   "+track.getInfo().title + "\n Duração: "+ truncate(trackDuration.toString(), trackDuration.toString().length() - 3) + "s");
             	channel.sendMessage(bd.build()).queue();
 
-                play(musicManager, track, channel, author,track.getInfo().title, "https://i.ytimg.com/vi/"+track.getInfo().uri.replace("https://www.youtube.com/watch?v=", "")+"/hqdefault.jpg");
+                play(musicManager, track);
             }
 
             @Override
@@ -71,7 +80,7 @@ public class PlayerManager {
                 EmbedBuilder bd =Utils.sucessEmbed(author, "A PlayList "+playlist.getName()+" foi carregada com sucesso");
             	bd.setImage("https://i.ytimg.com/vi/"+firstTrack.getInfo().uri.replace("https://www.youtube.com/watch?v=", "")+"/hqdefault.jpg");
             	channel.sendMessage(bd.build()).queue();
-                play(musicManager, firstTrack, channel, author, firstTrack.getInfo().title,"https://i.ytimg.com/vi/"+firstTrack.getInfo().uri.replace("https://www.youtube.com/watch?v=", "")+"/hqdefault.jpg");
+                play(musicManager, firstTrack);
 
                 playlist.getTracks().forEach(musicManager.scheduler::queue);
             }
@@ -89,7 +98,7 @@ public class PlayerManager {
 
     }
 
-    private void play(GuildMusicManager musicManager, AudioTrack track, TextChannel channel, User author, String title, String tumbUrl) {
+    private void play(GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
         
     }
