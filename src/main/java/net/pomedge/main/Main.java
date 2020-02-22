@@ -446,7 +446,14 @@ class Commands extends ListenerAdapter {
 
             channel2.sendMessage(bd.build()).queue();
             return;
+        }else if(event.getMessage().getMentionedMembers().isEmpty()){
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("<a:error:680884407594385419> Mencione o cara que vc quer banir");
+
+            channel2.sendMessage(bd.build()).queue();
+            return;
         }
+
 		event.getMessage().getMentionedMembers().get(0).ban(0).queue();
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("<a:BanKey:680884407594385419> Usuario Banido!");
