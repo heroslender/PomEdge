@@ -439,7 +439,20 @@ class Commands extends ListenerAdapter {
             ebb.setColor(Color.red);
             event.getChannel().sendMessage(ebb.build()).queue();
         }
-    }
+    } else if(args[0].equals(prefix+"ban")){
+		if(!event.getMember().hasPermission(Permission.BAN_MEMBERS)){
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("<a:error:680884407594385419> Você não tem permissão!");
+            bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
+            channel2.sendMessage(bd.build()).queue();
+            return;
+        }
+		event.getMessage().getMentionedMembers().get(0).ban(0).queue();
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("<a:BanKey:680884407594385419> Usuario Banido!");
+            bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
+            channel2.sendMessage(bd.build()).queue();
+	}
 }
 
     private boolean isUrl(String input) {
