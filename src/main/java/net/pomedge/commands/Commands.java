@@ -9,10 +9,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Invite.Channel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
@@ -37,6 +35,8 @@ public class Commands extends ListenerAdapter {
         TextChannel channel2 = event.getMessage().getTextChannel();
         String msg = event.getMessage().getContentRaw();
         String[] args = event.getMessage().getContentRaw().split(" ");
+        MessageChannel channel3 = event.getChannel();
+        
         String prefix;
 
         prefix = (String) Main.jsonReader.get(event.getGuild().getId() + "Prefix");
@@ -47,7 +47,7 @@ public class Commands extends ListenerAdapter {
         }
         if (Main.bannedUsers.contains(event.getAuthor().getId()) && msg.startsWith(prefix)) {
             channel2.sendMessage(
-                    "Infelizmente, nÃ£o podes executar nenhum comando, porque vocÃª quebrou os nossos termos, e o meu criador baniu vocÃª!")
+                    "Infelizmente, nao podes executar nenhum comando, porque tu quebrou os nossos termos, e o meu criador baniu vocÃª!")
                     .queue();
             return;
         }
@@ -63,8 +63,8 @@ public class Commands extends ListenerAdapter {
 
         }
 
-        if (args[0].equals(prefix + "banUser")) {
-            String tag = msg.replace(prefix+"banUser ", "");
+        if (args[0].equals(prefix + "block")) {
+            String tag = msg.replace(prefix+"block", "");
             try {
                 User teste = Main.jda.getUserByTag(tag);
             }catch (Exception e) {
@@ -72,13 +72,13 @@ public class Commands extends ListenerAdapter {
                 return;
             }
             if (args.length < 2) {
-                channel2.sendMessage("Uso: " + prefix + "banUser <TagDoMembro>").queue();
+                channel2.sendMessage("Uso: " + prefix + "block <TagDoMembro>").queue();
                 return;
             } else if (!event.getAuthor().getId().equals("535862121255141378")) {
                 channel2.sendMessage("Apenas o meu criador pode executar esse comando!").queue();
 
             } else if (Main.bannedUsers.contains(Main.jda.getUserByTag(tag).getId())) {
-                channel2.sendMessage("O Usuario @"+tag+" ja estÃ¡ registrado como banido no meu banco de dados, pulando...").queue();
+                channel2.sendMessage("O Usuario @"+tag+" ja esta registrado como banido no meu banco de dados, pulando...").queue();
                 return;
             } else {
                 Main.bannedUsers.add(Main.jda.getUserByTag(tag).getId());
@@ -87,16 +87,16 @@ public class Commands extends ListenerAdapter {
             }
         }
 
-        if (args[0].equals(prefix + "unbanUser")) {
-            String tag = msg.replace(prefix+"unbanUser ", "");
+        if (args[0].equals(prefix + "unBlock")) {
+            String tag = msg.replace(prefix+"unBlock", "");
             try {
                 User teste = Main.jda.getUserByTag(tag);
             }catch (IllegalArgumentException e) {
-                channel2.sendMessage("O usuario "+tag+" nÃ£o existe").queue();
+                channel2.sendMessage("O usuario "+tag+" nao existe").queue();
                 return;
             }
             if (args.length < 2) {
-                channel2.sendMessage("Uso: " + prefix + "unbanUser <TagDoMembro>").queue();
+                channel2.sendMessage("Uso: " + prefix + "unBlock <TagDoMembro>").queue();
                 return;
             } else if (!event.getAuthor().getId().equals("535862121255141378")) {
                 channel2.sendMessage("Apenas o meu criador pode executar esse comando!").queue();
@@ -107,7 +107,7 @@ public class Commands extends ListenerAdapter {
             } else {
                 Main.bannedUsers.remove(Main.jda.getUserByTag(tag).getId());
                 Opt.saveJson();
-                channel2.sendMessage("O Usuario @"+tag+" foi desbanido com sucesso!").queue();
+                channel2.sendMessage("O Usuario @"+tag+" foi desbloquiado com sucesso!").queue();
             }
         }
         else if(args[0].equals(prefix + "mostrarPosicao")) {
@@ -170,7 +170,9 @@ public class Commands extends ListenerAdapter {
 
                 return;
             }
-
+            
+//musica
+            
         } else if (args[0].equals(prefix + "play")) {
 
             String input = msg.replace(prefix + "play", "");
@@ -366,6 +368,9 @@ public class Commands extends ListenerAdapter {
             channel.sendMessage(builder.build()).queue();
 
         }
+        
+//moderacao
+        
         else if (args[0].equals(prefix+"aviso")) {
             if(event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
                 event.getChannel().sendMessage("@everyone" + event.getMessage().getContentRaw().replace(prefix+"aviso","") + ".").queue();
@@ -396,9 +401,15 @@ public class Commands extends ListenerAdapter {
             event.getMessage().getMentionedMembers().get(0).ban(0).queue();
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("<a:BanKey:680884407594385419> Usuario Banido!");
-            bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
+            bd.addField(new MessageEmbed.Field("Usuario: ",event.getMessage().getMentionedMembers().get(0).getAsMention(),true));
             channel2.sendMessage(bd.build()).queue();
         }else if(args[0].equals(prefix+"config")){
+        	if(args.length < 2) {
+        		EmbedBuilder ebb = new EmbedBuilder();
+            	ebb.setTitle("<a:error:680891547973320741> Erro");
+            	ebb.setDescription("");
+        	}
+        	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
                 Opt.setJsonElement(event.getGuild().getId()+"msgEntrada", Boolean.parseBoolean(args[2]));
                 Opt.saveJson();
@@ -406,12 +417,13 @@ public class Commands extends ListenerAdapter {
                 if(Boolean.parseBoolean(args[2])){
                     event.getChannel().sendMessage( "Agora configure o canal de texto para isso funcionar corretamente: \n "+prefix+"config msgEntradaChannel <Canal>").queue();
                 }
-            }if(args[1].equals("msgEntradaChannel")){
+            } else if(args[1].equals("msgEntradaChannel")){
                 Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
                 Opt.saveJson();
                 event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
             }
         }
+        else {}
     }
 
     private boolean isUrl(String input) {
