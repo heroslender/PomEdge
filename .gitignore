@@ -1,2 +1,15 @@
+
 /target/
 /bin/
+=======
+target/
+.settings
+.github
+.idea
+bin
+META-INF
+.classpath
+.project
+foto*.png
+PomEdge.iml
+settings.json
