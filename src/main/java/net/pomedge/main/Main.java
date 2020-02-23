@@ -408,7 +408,7 @@ class Commands extends ListenerAdapter {
 
         if (queue.isEmpty()) {
 
-            EmbedBuilder builder = new EmbedBuilder().setTitle("Minha fila estÃ¡ vazia!").setColor(Color.green);
+            EmbedBuilder builder = new EmbedBuilder().setTitle("Minha fila esta vazia!").setColor(Color.green);
             channel.sendMessage(builder.build()).queue();
             return;
         }
@@ -435,14 +435,14 @@ class Commands extends ListenerAdapter {
         else {
             EmbedBuilder ebb = new EmbedBuilder();
             ebb.setTitle("Erro");
-            ebb.setDescription("Só Administradores tem acesso a este comando");
+            ebb.setDescription("Administradores tem acesso a este comando e tu nao �s um adiministrasdor");
             ebb.setColor(Color.red);
             event.getChannel().sendMessage(ebb.build()).queue();
         }
     } else if(args[0].equals(prefix+"ban")){
 		if(!event.getMember().hasPermission(Permission.BAN_MEMBERS)){
             EmbedBuilder bd = new EmbedBuilder();
-            bd.setTitle("<a:error:680884407594385419> Você não tem permissão!");
+            bd.setTitle("<a:error:680884407594385419> tu nao tens tem permiss�o para isso");
 
             channel2.sendMessage(bd.build()).queue();
             return;
