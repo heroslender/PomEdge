@@ -422,8 +422,14 @@ public class Commands extends ListenerAdapter {
                 Opt.saveJson();
                 event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
             }
+        }else if(args[0].equals(prefix + "ping")){
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("Ping:");
+            bd.addField("Ping da internet: ",String.valueOf(event.getJDA().getGatewayPing()),true);
+            bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
+            channel2.sendMessage(bd.build()).queue();
         }
-        else {}
+
     }
 
     private boolean isUrl(String input) {
