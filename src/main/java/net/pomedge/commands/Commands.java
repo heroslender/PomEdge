@@ -407,7 +407,7 @@ public class Commands extends ListenerAdapter {
         	if(args.length < 2) {
         		EmbedBuilder ebb = new EmbedBuilder();
             	ebb.setTitle("<a:error:680891547973320741> Erro");
-            	ebb.setDescription("");
+            	ebb.setDescription("voc� n�o botou o comando certo");
         	}
         	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
