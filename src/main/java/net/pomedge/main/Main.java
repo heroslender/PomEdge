@@ -1,12 +1,17 @@
 package net.pomedge.main;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import javax.security.auth.login.LoginException;
 
 import net.pomedge.commands.Commands;
+import net.pomedge.events.modules.WelcomeMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,7 +43,7 @@ public class Main {
             e1.printStackTrace();
         }
         jdabuilder.addEventListeners(new Commands());
-
+        jdabuilder.addEventListeners(new WelcomeMessage());
         bannedUsers = (JSONArray) jsonReader.get("bannedUsers");
 
         jdabuilder.setToken((String) jsonReader.get("token"));
@@ -55,19 +60,6 @@ public class Main {
 
     }
 
-    public static void writeJson() {
 
-        FileWriter sw;
-        jsonReader.put("bannedUsers", bannedUsers);
-        try {
-            sw = new FileWriter("settings.json");
-            sw.write(jsonReader.toString());
-            sw.close();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-    }
 
 }

@@ -21,7 +21,7 @@ import net.pomedge.music.GuildMusicManager;
 import net.pomedge.music.PlayerManager;
 import net.pomedge.music.TrackScheduler;
 import net.pomedge.utils.Erros;
-import net.pomedge.utils.Utils;
+import net.pomedge.utils.Opt;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -41,9 +41,9 @@ public class Commands extends ListenerAdapter {
 
         prefix = (String) Main.jsonReader.get(event.getGuild().getId() + "Prefix");
         if (prefix == null) {
-            prefix = "!";
+            prefix = "pe!";
             Main.jsonReader.put(event.getGuild().getId() + "Prefix", "pe!");
-            Main.writeJson();
+            Opt.saveJson();
         }
         if (Main.bannedUsers.contains(event.getAuthor().getId()) && msg.startsWith(prefix)) {
             channel2.sendMessage(
@@ -58,7 +58,7 @@ public class Commands extends ListenerAdapter {
             }
             prefix = args[1];
             Main.jsonReader.put(event.getGuild().getId() + "Prefix", args[1]);
-            Main.writeJson();
+            Opt.saveJson();
             channel2.sendMessage("Prefixo alterado com sucesso!, o seu prefixo agora Ã© '" + prefix + "'").queue();
 
         }
@@ -82,7 +82,7 @@ public class Commands extends ListenerAdapter {
                 return;
             } else {
                 Main.bannedUsers.add(Main.jda.getUserByTag(tag).getId());
-                Main.writeJson();
+                Opt.saveJson();
                 channel2.sendMessage("O Usuario @"+tag+" foi banido com sucesso!").queue();
             }
         }
@@ -106,13 +106,13 @@ public class Commands extends ListenerAdapter {
                 return;
             } else {
                 Main.bannedUsers.remove(Main.jda.getUserByTag(tag).getId());
-                Main.writeJson();
+                Opt.saveJson();
                 channel2.sendMessage("O Usuario @"+tag+" foi desbanido com sucesso!").queue();
             }
         }
         else if(args[0].equals(prefix + "mostrarPosicao")) {
             if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
-                channel2.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build()).queue();
+                channel2.sendMessage(Opt.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build()).queue();
                 return;
             }
             AudioPlayer player = PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player;
@@ -146,13 +146,13 @@ public class Commands extends ListenerAdapter {
             GuildVoiceState memberVoiceState = event.getGuild().getMember(event.getAuthor()).getVoiceState();
             if (memberVoiceState.inVoiceChannel()) {
                 if (!event.getGuild().getMember(event.getJDA().getSelfUser()).hasPermission(permissions)) {
-                    EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(),
+                    EmbedBuilder bd = Opt.newEmbedSintaxe(event.getAuthor(),
                             "Eu nao tenho permissao  para entrar no seu canal de voz >:(", "`" + prefix + "join`",
                             Erros.ERRO);
                     event.getChannel().sendMessage(bd.build()).queue();
                     return;
                 } else if (event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().inVoiceChannel()) {
-                    EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(), "Eu jÃ¡ estou em outro canal de audio",
+                    EmbedBuilder bd = Opt.newEmbedSintaxe(event.getAuthor(), "Eu jÃ¡ estou em outro canal de audio",
                             "`" + prefix + "join`", Erros.ACESSO_NEGADO);
                     event.getChannel().sendMessage(bd.build()).queue();
                     return;
@@ -160,11 +160,11 @@ public class Commands extends ListenerAdapter {
                 event.getGuild().getAudioManager().openAudioConnection(memberVoiceState.getChannel());
                 event.getChannel().sendTyping();
 
-                EmbedBuilder bd = Utils.sucessEmbed(event.getAuthor(), "Eu Entrei no seu canal de voz com sucesso!");
+                EmbedBuilder bd = Opt.sucessEmbed(event.getAuthor(), "Eu Entrei no seu canal de voz com sucesso!");
                 event.getChannel().sendMessage(bd.build()).queue();
             } else {
                 event.getChannel().sendTyping();
-                EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(),
+                EmbedBuilder bd = Opt.newEmbedSintaxe(event.getAuthor(),
                         "Voce tem que estar em um canal de som para executar esse comando", "`-join`", Erros.ERRO);
                 event.getChannel().sendMessage(bd.build()).queue();
 
@@ -176,13 +176,13 @@ public class Commands extends ListenerAdapter {
             String input = msg.replace(prefix + "play", "");
             if (!event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().inVoiceChannel()) {
                 event.getChannel().sendTyping();
-                EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(),
+                EmbedBuilder bd = Opt.newEmbedSintaxe(event.getAuthor(),
                         "Use `-join`, porque eu nao estou em um canal de voz!", "`" + prefix + "play`", Erros.ERRO);
                 event.getChannel().sendMessage(bd.build()).queue();
                 return;
             } else if (args.length == 1) {
 
-                event.getChannel().sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                event.getChannel().sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                         "VocÃª nÃ£o passou pra mim a musica que vc quer", "`" + prefix + "play`", Erros.SINTAXE).build())
                         .queue();
             }
@@ -200,7 +200,7 @@ public class Commands extends ListenerAdapter {
 
             if (input.isEmpty()) {
                 event.getChannel()
-                        .sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                        .sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                                 "VocÃª nÃ£o colocou nenhum argumento: \n `" + prefix + "play <Titulo da musica>`",
                                 prefix + "play", Erros.SINTAXE).build());
 
@@ -209,13 +209,13 @@ public class Commands extends ListenerAdapter {
 
             if (!isUrl(input)) {
                 MessageAction msg1 = event.getChannel()
-                        .sendMessage(Utils.sucessEmbed(event.getAuthor(), "Proucurando...").build());
+                        .sendMessage(Opt.sucessEmbed(event.getAuthor(), "Proucurando...").build());
 
                 msg1.queue();
                 String ytSearched = searchYoutube(input);
 
                 if (ytSearched == null) {
-                    event.getChannel().sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                    event.getChannel().sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                             "Nao foram encontrados resultados!", prefix + "play", Erros.ERRO).build());
 
                     return;
@@ -230,14 +230,15 @@ public class Commands extends ListenerAdapter {
         } else if (args[0].equals(prefix + "leave") || args[0].equals(prefix + "sair")) {
             if (!event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().inVoiceChannel()) {
                 event.getChannel().sendTyping();
-                EmbedBuilder bd = Utils.newEmbedSintaxe(event.getAuthor(),
+                EmbedBuilder bd = Opt.newEmbedSintaxe(event.getAuthor(),
                         "Como assim sair? Eu nem estou em um canal de voz ",
                         "`" + prefix + "leave`", Erros.ERRO);
                 event.getChannel().sendMessage(bd.build()).queue();
             } else {
                 event.getGuild().getAudioManager().closeAudioConnection();
                 event.getChannel().sendTyping();
-                EmbedBuilder bd = Utils.sucessEmbed(event.getAuthor(), "Eu sai do canal de voz com sucesso!");
+                EmbedBuilder bd = Opt.sucessEmbed(event.getAuthor(), "Eu sai do canal de voz com sucesso!");
+
                 event.getChannel().sendMessage(bd.build()).queue();
             }
         } else if (args[0].equals(prefix + "skip") || args[0].equals(prefix + "pular")) {
@@ -247,13 +248,13 @@ public class Commands extends ListenerAdapter {
             TrackScheduler scheduler = musicManager.scheduler;
             AudioPlayer player = musicManager.player;
             if (player.getPlayingTrack() == null) {
-                channel.sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                channel.sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                         "Wtf, vc ta querendo pular uma musica, MAS EU NEM TO TOCANDO NADA",
                         prefix + "skip", Erros.ERRO).build()).queue();
 
                 return;
             }
-            channel.sendMessage(Utils.sucessEmbed(event.getAuthor(),
+            channel.sendMessage(Opt.sucessEmbed(event.getAuthor(),
                     "A musica '" + player.getPlayingTrack().getInfo().title + "' foi pulada").build()).queue();
             scheduler.nextTrack();
 
@@ -261,7 +262,7 @@ public class Commands extends ListenerAdapter {
             PlayerManager playerManager = PlayerManager.getInstance();
             GuildMusicManager musicManager = playerManager.getGuildMusicManager(event.getGuild());
             if (musicManager.player.getPlayingTrack() == null) {
-                event.getTextChannel().sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                event.getTextChannel().sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                         "NÃ£o tenho nunhuma musica em reproduÃ§Ã£o", "`" + prefix + "parar`", Erros.ERRO).build()).queue();
                 return;
             } else
@@ -269,7 +270,7 @@ public class Commands extends ListenerAdapter {
             musicManager.player.stopTrack();
             musicManager.player.setPaused(false);
 
-            event.getTextChannel().sendMessage(Utils
+            event.getTextChannel().sendMessage(Opt
                     .sucessEmbed(event.getAuthor(), "A musica foi parada e a  minha playlist foi deletada!").build())
                     .queue();
         } else if (args[0].equals(prefix+"pause") || args[0].equals(prefix+"pausar")) {
@@ -277,7 +278,7 @@ public class Commands extends ListenerAdapter {
             GuildMusicManager musicManager = playerManager.getGuildMusicManager(event.getGuild());
             if (musicManager.player.getPlayingTrack() == null) {
                 event.getTextChannel()
-                        .sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                        .sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                                 "NÃ£o tenho nenhuma mÃºsica para pausar/despausar", prefix+"`pause`", Erros.ERRO).build())
                         .queue();
                 ;
@@ -285,18 +286,18 @@ public class Commands extends ListenerAdapter {
             }
             if (!musicManager.player.isPaused()) {
                 musicManager.player.setPaused(true);
-                event.getTextChannel().sendMessage(Utils.sucessEmbed(event.getAuthor(),
+                event.getTextChannel().sendMessage(Opt.sucessEmbed(event.getAuthor(),
                         "Musica pausada com sucesso!\n DÃª `"+prefix+"pause` denovo para despausar!").build()).queue();
             } else {
                 musicManager.player.setPaused(false);
-                event.getTextChannel().sendMessage(Utils.sucessEmbed(event.getAuthor(),
+                event.getTextChannel().sendMessage(Opt.sucessEmbed(event.getAuthor(),
                         "Musica despausada com sucesso!\n DÃª `"+prefix+"pause` denovo para pausar!").build()).queue();
             }
 
         } else if (args[0].equals(prefix+"volume")) {
             if (args.length == 1) {
                 event.getChannel()
-                        .sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                        .sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                                 "Coloque um numero de `0 - 100`:\n "+prefix+"volume <NÃºmero>`", "`"+prefix+"volume`", Erros.SINTAXE)
                                 .build())
                         .queue();
@@ -307,14 +308,14 @@ public class Commands extends ListenerAdapter {
 
             } catch (NumberFormatException e) {
                 event.getChannel()
-                        .sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                        .sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                                 "Por favor, digite um numero valido! `0 - 100`", "`"+prefix+"volume`", Erros.SINTAXE).build())
                         .queue();
                 return;
             }
             if (volume < 0 || volume > 100) {
                 event.getChannel()
-                        .sendMessage(Utils.newEmbedSintaxe(event.getAuthor(),
+                        .sendMessage(Opt.newEmbedSintaxe(event.getAuthor(),
                                 "Por favor, digite um numero valido! `0 - 100`", "`"+prefix+"volume`", Erros.SINTAXE).build())
                         .queue();
                 return;
@@ -323,16 +324,16 @@ public class Commands extends ListenerAdapter {
             GuildMusicManager musicManager = playerManager.getGuildMusicManager(event.getGuild());
             musicManager.player.setVolume(volume);
             event.getTextChannel()
-                    .sendMessage(Utils.sucessEmbed(event.getAuthor(), "Volume alterado com sucesso!").build()).queue();
+                    .sendMessage(Opt.sucessEmbed(event.getAuthor(), "Volume alterado com sucesso!").build()).queue();
         } else if (args[0].equals(prefix+"wpn?")) {
             PlayerManager playerManager = PlayerManager.getInstance();
             GuildMusicManager musicManager = playerManager.getGuildMusicManager(event.getGuild());
             if (musicManager.player.getPlayingTrack() == null) {
                 event.getTextChannel()
-                        .sendMessage(Utils.sucessEmbed(event.getAuthor(), "NÃ£o estou cantando nada.").build()).queue();
+                        .sendMessage(Opt.sucessEmbed(event.getAuthor(), "NÃ£o estou cantando nada.").build()).queue();
             } else {
                 event.getTextChannel()
-                        .sendMessage(Utils
+                        .sendMessage(Opt
                                 .sucessEmbed(event.getAuthor(),
                                         "Estou cantando: " + musicManager.player.getPlayingTrack().getInfo().title)
                                 .build())
@@ -380,13 +381,13 @@ public class Commands extends ListenerAdapter {
         } else if(args[0].equals(prefix+"ban")){
             if(!event.getMember().hasPermission(Permission.BAN_MEMBERS)){
                 EmbedBuilder bd = new EmbedBuilder();
-                bd.setTitle("<a:error:680884407594385419> Você não tem permissão!");
+                bd.setTitle("<a:error:680891547973320741> Você não tem permissão!");
 
                 channel2.sendMessage(bd.build()).queue();
                 return;
             }else if(event.getMessage().getMentionedMembers().isEmpty()){
                 EmbedBuilder bd = new EmbedBuilder();
-                bd.setTitle("<a:error:680884407594385419> Mencione o cara que vc quer banir");
+                bd.setTitle("<a:error:680891547973320741> Mencione o cara que vc quer banir");
 
                 channel2.sendMessage(bd.build()).queue();
                 return;
@@ -397,6 +398,19 @@ public class Commands extends ListenerAdapter {
             bd.setTitle("<a:BanKey:680884407594385419> Usuario Banido!");
             bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
             channel2.sendMessage(bd.build()).queue();
+        }else if(args[0].equals(prefix+"config")){
+            if(args[1].equals("msgEntrada")){
+                Opt.setJsonElement(event.getGuild().getId()+"msgEntrada", Boolean.parseBoolean(args[2]));
+                Opt.saveJson();
+                event.getChannel().sendMessage("msgEntrada setado para:"+args[2]).queue();
+                if(Boolean.parseBoolean(args[2])){
+                    event.getChannel().sendMessage( "Agora configure o canal de texto para isso funcionar corretamente: \n "+prefix+"config msgEntradaChannel <Canal>").queue();
+                }
+            }if(args[1].equals("msgEntradaChannel")){
+                Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
+                Opt.saveJson();
+                event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
+            }
         }
     }
 

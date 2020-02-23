@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.pomedge.utils.Erros;
-import net.pomedge.utils.Utils;
+import net.pomedge.utils.Opt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +78,7 @@ public class PlayerManager {
                 }
 
                 
-                EmbedBuilder bd = Utils.sucessEmbed(author, "A PlayList "+playlist.getName()+" foi carregada com sucesso");
+                EmbedBuilder bd = Opt.sucessEmbed(author, "A PlayList "+playlist.getName()+" foi carregada com sucesso");
             	bd.setImage("https://i.ytimg.com/vi/"+firstTrack.getInfo().uri.replace("https://www.youtube.com/watch?v=", "")+"/hqdefault.jpg");
             	channel.sendMessage(bd.build()).queue();
                 play(musicManager, firstTrack);
@@ -88,12 +88,12 @@ public class PlayerManager {
 
             @Override
             public void noMatches() {
-                channel.sendMessage(Utils.newEmbedSintaxe(author, "URL Errada ou nenhum item encontrado na pesquisa", "-play", Erros.SINTAXE).build()).queue();
+                channel.sendMessage(Opt.newEmbedSintaxe(author, "URL Errada ou nenhum item encontrado na pesquisa", "-play", Erros.SINTAXE).build()).queue();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-            	channel.sendMessage(Utils.newEmbedSintaxe(author, "Ocorreu um erro por parte nossa,\n por favor, entre em contacto connosco: <@535862121255141378>", "-play", Erros.ERRO).build()).queue();
+            	channel.sendMessage(Opt.newEmbedSintaxe(author, "Ocorreu um erro por parte nossa,\n por favor, entre em contacto connosco: <@535862121255141378>", "-play", Erros.ERRO).build()).queue();
             }
         });
 

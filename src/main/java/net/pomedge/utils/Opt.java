@@ -1,11 +1,16 @@
 package net.pomedge.utils;
 
 import java.awt.Color;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
+import net.pomedge.main.Main;
 
-public class Utils {
+import javax.annotation.Nullable;
+
+public class Opt {
 	
 	public static EmbedBuilder newEmbedSintaxe(User author, String description, String cmd, Erros sintaxe) {
 
@@ -38,5 +43,26 @@ public class Utils {
 		bd.setDescription(description);
 		bd.setFooter(author.getName(), author.getAvatarUrl());
 		return bd;
+	}
+	@Nullable
+	public static Object getJsonElement(Object key){
+		return Main.jsonReader.get(key);
+	}
+	public static void setJsonElement(Object key ,Object value){
+		Main.jsonReader.put(key,value);
+	}
+	public static void saveJson() {
+
+		FileWriter sw;
+		Main.jsonReader.put("bannedUsers", Main.bannedUsers);
+		try {
+			sw = new FileWriter("settings.json");
+			sw.write(Main.jsonReader.toString());
+			sw.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
 	}
 }
