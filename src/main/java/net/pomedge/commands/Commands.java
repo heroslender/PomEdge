@@ -409,6 +409,10 @@ public class Commands extends ListenerAdapter {
             bd.setDescription("Usuario: "+event.getMessage().getMentionedMembers().get(0).getAsMention());
             channel2.sendMessage(bd.build()).queue();
         }else if(args[0].equals(prefix+"config")){
+        	if(args.length < 2) {
+        		EmbedBuilder ebb = new EmbedBuilder();
+            	ebb.setTitle("<a:error:680891547973320741> Erro");
+        	}
         	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
                 Opt.setJsonElement(event.getGuild().getId()+"msgEntrada", Boolean.parseBoolean(args[2]));
@@ -421,10 +425,6 @@ public class Commands extends ListenerAdapter {
                 Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
                 Opt.saveJson();
                 event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
-            }
-            else {
-            	EmbedBuilder ebb = new EmbedBuilder();
-            	ebb.setTitle("<a:error:680891547973320741> Erro");
             }
         }
         else {}
