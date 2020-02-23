@@ -407,7 +407,7 @@ public class Commands extends ListenerAdapter {
         	if(args.length < 2) {
         		EmbedBuilder ebb = new EmbedBuilder();
             	ebb.setTitle("<a:error:680891547973320741> Erro");
-            	ebb.setDescription("");
+            	ebb.setDescription("você não botou o comando certo");
         	}
         	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
@@ -423,7 +423,6 @@ public class Commands extends ListenerAdapter {
                 event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
             }
         }
-        else {}
     }
 
     private boolean isUrl(String input) {
