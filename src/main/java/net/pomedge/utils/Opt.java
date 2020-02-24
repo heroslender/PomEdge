@@ -3,6 +3,7 @@ package net.pomedge.utils;
 import java.awt.Color;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -11,7 +12,7 @@ import net.pomedge.main.Main;
 import javax.annotation.Nullable;
 
 public class Opt {
-	
+	public static ArrayList<String> helpId = new ArrayList<String>();
 	public static EmbedBuilder newEmbedSintaxe(User author, String description, String cmd, Erros sintaxe) {
 
 		EmbedBuilder bd = new EmbedBuilder();

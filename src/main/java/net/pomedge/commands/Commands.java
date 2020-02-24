@@ -379,7 +379,7 @@ public class Commands extends ListenerAdapter {
             else {
                 EmbedBuilder ebb = new EmbedBuilder();
                 ebb.setTitle("Erro");
-                ebb.setDescription("SÃ³ Administradores tem acesso a este comando");
+                ebb.setDescription("so Administradores tem acesso a este comando");
                 ebb.setColor(Color.red);
                 event.getChannel().sendMessage(ebb.build()).queue();
             }
@@ -407,7 +407,7 @@ public class Commands extends ListenerAdapter {
         	if(args.length < 2) {
         		EmbedBuilder ebb = new EmbedBuilder();
             	ebb.setTitle("<a:error:680891547973320741> Erro");
-            	ebb.setDescription("vocï¿½ nï¿½o botou o comando certo");
+            	ebb.setDescription("Uso: " + prefix + "config algumTipoDeConfiguração o que tu queres mudar");
         	}
         	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
