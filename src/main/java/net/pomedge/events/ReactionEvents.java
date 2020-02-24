@@ -1,5 +1,6 @@
 package net.pomedge.events;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,7 +18,12 @@ public class ReactionEvents extends ListenerAdapter {
 		Message msg = event.getChannel().getHistory().getMessageById(event.getMessageId());
 		if(event.getUser() == event.getJDA().getSelfUser()) return;
 		if(event.getReactionEmote().getId() == "680732802244673598") {
-			msg.editMessage("Comandos de Musica:\n```play```");
+			EmbedBuilder ebb = new EmbedBuilder();
+			ebb.setTitle("Comando de musica");
+			ebb.addField("play","este comando serve para quando tu queres colocar uma musica, Uso: play <musica>",true);
+			ebb.addField("join","este comando serve para quando tu queres colocar o bot na mesma sala de voz que tu esta, Uso: play <musica>",true);
+			ebb.addField("play","este comando serve para quando tu queres colocar uma musica, Uso: play <musica>",true);
+			msg.editMessage(ebb.build()).queue();
 		}
 	}
 	
