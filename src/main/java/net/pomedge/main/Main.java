@@ -11,6 +11,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.security.auth.login.LoginException;
 
 import net.pomedge.commands.Commands;
+import net.pomedge.events.ReactionEvents;
 import net.pomedge.events.modules.WelcomeMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -44,6 +45,7 @@ public class Main {
         }
         jdabuilder.addEventListeners(new Commands());
         jdabuilder.addEventListeners(new WelcomeMessage());
+        jdabuilder.addEventListeners(new ReactionEvents());
         bannedUsers = (JSONArray) jsonReader.get("bannedUsers");
 
         jdabuilder.setToken((String) jsonReader.get("token"));
