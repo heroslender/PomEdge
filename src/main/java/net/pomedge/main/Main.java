@@ -53,7 +53,7 @@ public class Main {
 
         } catch (LoginException e) {
             System.out.println(
-                    "ERRO AO LOGAR! \n SoluÃ§Ãµes comuns: \n Verifique sua conexÃ£o com a internet \n Verifique o token");
+                    "ERRO AO LOGAR:\n Motivo: "+e.getMessage()+"; \n Soluções comuns: \n Verifique sua conexÃ£o com a internet; \n Verifique o token;");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
