@@ -407,7 +407,7 @@ public class Commands extends ListenerAdapter {
         	if(args.length < 2) {
         		EmbedBuilder ebb = new EmbedBuilder();
             	ebb.setTitle("<a:error:680891547973320741> Erro");
-            	ebb.setDescription("Uso: " + prefix + "config algumTipoDeConfiguração o que tu queres mudar");
+            	ebb.setDescription("Uso: " + prefix + "config algumTipoDeConfiguraï¿½ï¿½o o que tu queres mudar");
         	}
         	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
@@ -429,7 +429,12 @@ public class Commands extends ListenerAdapter {
             bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
             channel2.sendMessage(bd.build()).queue();
         }
-
+        else if(args[0].equals(prefix+"help")){
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("Ajuda:");
+            bd.addField("<a:Music:680732802244673598>:"," Comandos de Musica", true);
+            Opt.helpId.add(channel2.sendMessage(bd.build()).complete().getId());
+        }
     }
 
     private boolean isUrl(String input) {
