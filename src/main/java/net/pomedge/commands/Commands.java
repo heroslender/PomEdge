@@ -59,7 +59,7 @@ public class Commands extends ListenerAdapter {
             prefix = args[1];
             Main.jsonReader.put(event.getGuild().getId() + "Prefix", args[1]);
             Opt.saveJson();
-            channel2.sendMessage("Prefixo alterado com sucesso!, o seu prefixo agora Ã© '" + prefix + "'").queue();
+            channel2.sendMessage("Prefixo alterado com sucesso!, o seu prefixo agora esta como '" + prefix + "'").queue();
 
         }
 
@@ -131,7 +131,7 @@ public class Commands extends ListenerAdapter {
             try {
                 Integer teste = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                channel2.sendMessage("O numero especificado Ã© invalido!").queue();
+                channel2.sendMessage("O numero especificado esta invalido!").queue();
                 return;
             }
             List<Message> messages = event.getChannel().getHistory().retrievePast(Integer.parseInt(args[1])).complete();
@@ -417,18 +417,19 @@ public class Commands extends ListenerAdapter {
                 if(Boolean.parseBoolean(args[2])){
                     event.getChannel().sendMessage( "Agora configure o canal de texto para isso funcionar corretamente: \n "+prefix+"config msgEntradaChannel <Canal>").queue();
                 }
-            } else if(args[1].equals("msgEntradaChannel")){
-                Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
-                Opt.saveJson();
-                event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
-            }
-        }else if(args[0].equals(prefix + "ping")){
-            EmbedBuilder bd = new EmbedBuilder();
-            bd.setTitle("Ping:");
-            bd.addField("Ping da internet: ",String.valueOf(event.getJDA().getGatewayPing()),true);
-            bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
-            channel2.sendMessage(bd.build()).queue();
+        } else if(args[1].equals("msgEntradaChannel")){
+            Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
+            Opt.saveJson();
+            event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
         }
+    }else if(args[0].equals(prefix + "ping")){
+        EmbedBuilder bd = new EmbedBuilder();
+        bd.setTitle("Ping:");
+        bd.addField("Ping da internet: ",String.valueOf(event.getJDA().getGatewayPing()),true);
+        bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
+        channel2.sendMessage(bd.build()).queue();
+    }
+        //TODO ajuda
         else if(args[0].equals(prefix+"help")){
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("Ajuda:");
