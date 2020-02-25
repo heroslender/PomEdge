@@ -432,8 +432,10 @@ public class Commands extends ListenerAdapter {
         else if(args[0].equals(prefix+"help")){
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("Ajuda:");
-            bd.addField("<a:Music:680732802244673598>:"," Comandos de Musica", true);
-            Opt.helpId.add(channel2.sendMessage(bd.build()).complete().getId());
+            bd.addField("<a:Music:680732802244673598>:"," Comandos de Musica", false);
+            Message msg1 = channel2.sendMessage(bd.build()).complete();
+            msg1.addReaction(Main.jda.getGuildById((String)Opt.getJsonElement("supportGuildId")).getEmoteById("680732802244673598")).queue();
+            Opt.helpId.add(msg1.getId());
         }
     }
 
