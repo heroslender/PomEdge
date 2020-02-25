@@ -26,12 +26,18 @@ public class ReactionEvents extends ListenerAdapter {
 			msg = channel.retrieveMessageById(event.getMessageId()).complete();
 			EmbedBuilder ebb = new EmbedBuilder();
 			ebb.setTitle("Comando de musica");
-			ebb.addField("play", "este comando serve para quando tu queres colocar uma musica, Uso: play <musica>", true);
-			ebb.addField("join", "este comando serve para quando tu queres colocar o bot na mesma sala de voz que tu esta, Uso: play <musica>", true);
-			ebb.addField("play", "este comando serve para quando tu queres colocar uma musica, Uso: play <musica>", true);
+			ebb.addField("```play```", "```este comando serve para quando tu queres colocar uma musica,\nUso: <prefix>play <musica>```", true);
+			ebb.addField("```join```", "```este comando serve para quando tu queres colocar o bot na mesma sala de voz que tu esta,\nUso: <prefix>join```", true);
+			ebb.addField("```mostrarPosicao```", "```este comando serve para quando tu queres saber qual posicao a musica esta,\nUso: <prefix>mostrarPosicao <nomeDaMusica>```", true);
+			ebb.addField("```volume```", "```este comando serve para quando tu queres diminuir/aumentar o volume da musica,\nUso: <prefix>volume <aPorcentagem>```", true);
+			ebb.addField("```leave```", "```este comando serve para quando tu queres tirar o bot da sala de voz que tu estas,\nUso: <prefix>leave```", true);
+			ebb.addField("```skip```", "```este comando serve para quando tu queres pular a musica que esta a tocar,\nUso: <prefix>skip```", true);
+			ebb.addField("```stop```", "```este comando serve para quando tu queres parar de tocar as musicas e tambem vai deletar toda a fila de musicas que tu criaste,\nUso: <prefix>stop```", true);
+			ebb.addField("```pause```", "```este comando serve para quando tu queres pausar/despausar a musica,\nUso: <prefix>pause```", true);
+			ebb.addField("```queue```", "```este comando serve para quando tu queres ver as musicas que estão na fila,\nUso: <prefix>volume <aPorcentagem>```", true);
+			ebb.addField("```wpn?```", "```este comando serve para quando tu queres saber a musica que esta a tocar,\nUso: <prefix>wpn?```", true);
 			msg.editMessage(ebb.build()).queue();
 		}
-		System.out.println(event.getMessageId());
 	}
 
 }
