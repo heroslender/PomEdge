@@ -435,8 +435,14 @@ public class Commands extends ListenerAdapter {
             bd.setTitle("Ajuda:");
             bd.addField("Clique em <a:Music:680732802244673598>:","  para ver os comandos de musica", true);
             Message msg1 = channel2.sendMessage(bd.build()).complete();
-            msg1.addReaction(Main.jda.getGuildById((String)Opt.getJsonElement("supportGuildId")).getEmoteById("681866042623918091")).queue();
-            msg1.addReaction(Main.jda.getGuildById((String)Opt.getJsonElement("supportGuildId")).getEmotesByName("Music",false).get(0)).queue();
+            ArrayList<String> emojis = new ArrayList<String>();
+            emojis.add("680732802244673598");
+            emojis.add("681866042623918091");
+            for(String emoji: emojis) {
+                System.out.println(emoji);
+                msg1.addReaction(Main.jda.getGuildById("680488335453585409").getEmoteById(emoji)).queue();
+
+            }
 
 
             Opt.helpId.add(msg1.getId());
