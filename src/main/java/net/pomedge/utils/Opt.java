@@ -57,7 +57,7 @@ public class Opt {
 		FileWriter sw;
 		Main.jsonReader.put("bannedUsers", Main.bannedUsers);
 		try {
-			sw = new FileWriter("settings.json");
+			sw = new FileWriter("config.json");
 			sw.write(Main.jsonReader.toString());
 			sw.close();
 		} catch (IOException e) {
