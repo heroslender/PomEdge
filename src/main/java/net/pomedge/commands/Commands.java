@@ -110,6 +110,7 @@ public class Commands extends ListenerAdapter {
                 channel2.sendMessage("O Usuario @"+tag+" foi desbloquiado com sucesso!").queue();
             }
         }
+        //TODO musica
         else if(args[0].equals(prefix + "mostrarPosicao")) {
             if(PlayerManager.getInstance().getGuildMusicManager(event.getGuild()).player.getPlayingTrack() == null) {
                 channel2.sendMessage(Opt.newEmbedSintaxe(event.getAuthor(), "Não estou tocando nada", "'"+prefix+"mostrarDuracao'", Erros.ERRO).build()).queue();

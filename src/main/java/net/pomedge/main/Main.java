@@ -31,7 +31,7 @@ public class Main {
     public static void main(String[] args) {
         JDABuilder jdabuilder = new JDABuilder(AccountType.BOT);
         try {
-            FileReader s = new FileReader("config.json");
+            FileReader s = new FileReader("settings.json");
             jsonReader = (JSONObject) jp.parse(s);
 
         } catch (FileNotFoundException e1) {
