@@ -33,7 +33,7 @@ public class WelcomeMessage extends ListenerAdapter {
                 //cria URL
                 URL url1 = new URL(event.getUser().getAvatarUrl());
 
-                //abre uma conexao na url criada a cima
+                //abre uma conexao na url criada aï¿½cima
                 URLConnection con =  url1.openConnection();
                 con.addRequestProperty("User-Agent", "Mozilla");
                 con.setReadTimeout(5000);

@@ -34,7 +34,7 @@ public class ReactionEvents extends ListenerAdapter {
 			ebb.addField("```skip```", "```este comando serve para quando tu queres pular a musica que esta a tocar,\nUso: <prefix>skip```", true);
 			ebb.addField("```stop```", "```este comando serve para quando tu queres parar de tocar as musicas e tambem vai deletar toda a fila de musicas que tu criaste,\nUso: <prefix>stop```", true);
 			ebb.addField("```pause```", "```este comando serve para quando tu queres pausar/despausar a musica,\nUso: <prefix>pause```", true);
-			ebb.addField("```queue```", "```este comando serve para quando tu queres ver as musicas que estão na fila,\nUso: <prefix>volume <aPorcentagem>```", true);
+			ebb.addField("```queue```", "```este comando serve para quando tu queres ver as musicas que estï¿½o na fila,\nUso: <prefix>volume <aPorcentagem>```", true);
 			ebb.addField("```wpn?```", "```este comando serve para quando tu queres saber a musica que esta a tocar,\nUso: <prefix>wpn?```", true);
 
 			msg.editMessage(ebb.build()).queue();
