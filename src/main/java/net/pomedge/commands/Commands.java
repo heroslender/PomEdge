@@ -10,7 +10,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.entities.Invite.Channel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
@@ -26,7 +25,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-@SuppressWarnings("all")
+
 public class Commands extends ListenerAdapter {
     public static YouTube youTube;
 
@@ -36,7 +35,7 @@ public class Commands extends ListenerAdapter {
         String msg = event.getMessage().getContentRaw();
         String[] args = event.getMessage().getContentRaw().split(" ");
         MessageChannel channel3 = event.getChannel();
-        
+
         String prefix;
 
         prefix = (String) Main.jsonReader.get(event.getGuild().getId() + "Prefix");
@@ -171,9 +170,9 @@ public class Commands extends ListenerAdapter {
 
                 return;
             }
-            
+
 //musica
-            
+
         } else if (args[0].equals(prefix + "play")) {
 
             String input = msg.replace(prefix + "play", "");
@@ -369,9 +368,9 @@ public class Commands extends ListenerAdapter {
             channel.sendMessage(builder.build()).queue();
 
         }
-        
+
 //moderacao
-        
+
         else if (args[0].equals(prefix+"aviso")) {
             if(event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
                 event.getChannel().sendMessage("@everyone" + event.getMessage().getContentRaw().replace(prefix+"aviso","") + ".").queue();
@@ -405,12 +404,12 @@ public class Commands extends ListenerAdapter {
             bd.addField(new MessageEmbed.Field("Usuario: ",event.getMessage().getMentionedMembers().get(0).getAsMention(),true));
             channel2.sendMessage(bd.build()).queue();
         }else if(args[0].equals(prefix+"config")){
-        	if(args.length < 2) {
-        		EmbedBuilder ebb = new EmbedBuilder();
-            	ebb.setTitle("<a:error:680891547973320741> Erro");
-            	ebb.setDescription("Uso: " + prefix + "config algumTipoDeConfigura��o o que tu queres mudar");
-        	}
-        	if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
+            if(args.length < 2) {
+                EmbedBuilder ebb = new EmbedBuilder();
+                ebb.setTitle("<a:error:680891547973320741> Erro");
+                ebb.setDescription("Uso: " + prefix + "config algumTipoDeConfigura��o o que tu queres mudar");
+            }
+            if(!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {return;}
             if(args[1].equals("msgEntrada")){
                 Opt.setJsonElement(event.getGuild().getId()+"msgEntrada", Boolean.parseBoolean(args[2]));
                 Opt.saveJson();
@@ -418,25 +417,34 @@ public class Commands extends ListenerAdapter {
                 if(Boolean.parseBoolean(args[2])){
                     event.getChannel().sendMessage( "Agora configure o canal de texto para isso funcionar corretamente: \n "+prefix+"config msgEntradaChannel <Canal>").queue();
                 }
-        } else if(args[1].equals("msgEntradaChannel")){
-            Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
-            Opt.saveJson();
-            event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
+            } else if(args[1].equals("msgEntradaChannel")){
+                Opt.setJsonElement(event.getGuild().getId()+"msgEntradaChannel", event.getMessage().getMentionedChannels().get(0).getId());
+                Opt.saveJson();
+                event.getChannel().sendMessage("msgEntradaChannel setado para:"+args[2]).queue();
+            }
+        }else if(args[0].equals(prefix + "ping")){
+            EmbedBuilder bd = new EmbedBuilder();
+            bd.setTitle("Ping:");
+            bd.addField("Ping da internet: ",String.valueOf(event.getJDA().getGatewayPing()),true);
+            bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
+            channel2.sendMessage(bd.build()).queue();
         }
-    }else if(args[0].equals(prefix + "ping")){
-        EmbedBuilder bd = new EmbedBuilder();
-        bd.setTitle("Ping:");
-        bd.addField("Ping da internet: ",String.valueOf(event.getJDA().getGatewayPing()),true);
-        bd.addField("Ping da API: ",String.valueOf(event.getJDA().getRestPing().complete()),true);
-        channel2.sendMessage(bd.build()).queue();
-    }
         //TODO ajuda
         else if(args[0].equals(prefix+"help")){
             EmbedBuilder bd = new EmbedBuilder();
             bd.setTitle("Ajuda:");
-            bd.addField("<a:Music:680732802244673598>:"," Comandos de Musica", false);
+            bd.addField("Clique em <a:Music:680732802244673598>:","  para ver os comandos de musica", true);
             Message msg1 = channel2.sendMessage(bd.build()).complete();
-            msg1.addReaction(Main.jda.getGuildById((String)Opt.getJsonElement("supportGuildId")).getEmoteById("680732802244673598")).queue();
+            ArrayList<String> emojis = new ArrayList<String>();
+            emojis.add("680732802244673598");
+            emojis.add("681866042623918091");
+            for(String emoji: emojis) {
+                System.out.println(emoji);
+                msg1.addReaction(Main.jda.getGuildById("680488335453585409").getEmoteById(emoji)).queue();
+
+            }
+
+
             Opt.helpId.add(msg1.getId());
         }
     }

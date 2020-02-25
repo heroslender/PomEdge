@@ -1,13 +1,6 @@
 package net.pomedge.main;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import javax.security.auth.login.LoginException;
 
 import net.pomedge.commands.Commands;
@@ -31,7 +24,7 @@ public class Main {
     public static void main(String[] args) {
         JDABuilder jdabuilder = new JDABuilder(AccountType.BOT);
         try {
-            FileReader s = new FileReader("settings.json");
+            FileReader s = new FileReader("config.json");
             jsonReader = (JSONObject) jp.parse(s);
 
         } catch (FileNotFoundException e1) {

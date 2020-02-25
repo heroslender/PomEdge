@@ -1,6 +1,6 @@
 
-/target/
-/bin/
+target/
+bin/
 target/
 .settings
 .github
