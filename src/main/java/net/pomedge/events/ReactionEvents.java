@@ -36,6 +36,15 @@ public class ReactionEvents extends ListenerAdapter {
 			ebb.addField("```pause```", "```este comando serve para quando tu queres pausar/despausar a musica,\nUso: <prefix>pause```", true);
 			ebb.addField("```queue```", "```este comando serve para quando tu queres ver as musicas que estão na fila,\nUso: <prefix>volume <aPorcentagem>```", true);
 			ebb.addField("```wpn?```", "```este comando serve para quando tu queres saber a musica que esta a tocar,\nUso: <prefix>wpn?```", true);
+
+			msg.editMessage(ebb.build()).queue();
+		}
+		if(event.getReactionEmote().getName().equals("wrech")) {
+			TextChannel channel = (TextChannel) event.getChannel();
+			msg = channel.retrieveMessageById(event.getMessageId()).complete();
+			EmbedBuilder ebb = new EmbedBuilder();
+			ebb.addField("```ban```", "```este comando serve para dar ban numa pessoa,\nUso: <prefix>volume <tagDoUsuario>```", true);
+			ebb.addField("```config```", "```este comando serve para alterar as propriedades do bot neste server,\nUso: <prefix>config <oqQuerConfigurar>```", true);
 			msg.editMessage(ebb.build()).queue();
 		}
 	}
