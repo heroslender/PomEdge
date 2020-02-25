@@ -1,13 +1,6 @@
 package net.pomedge.main;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import javax.security.auth.login.LoginException;
 
 import net.pomedge.commands.Commands;
